@@ -5,45 +5,32 @@ import {
   Switch
 } from 'react-router-dom';
 
-import App from './components/App/app';
+import Header from './components/Header/header';
+import Home from './components/Home/home';
 import About from './components/About/about';
+import Contact from './components/Contact/contact';
 import NotFound from './components/NotFound/notfound';
 
-// const Routes = (props) => (
-//   <Router>
-//     <Switch>
-//       <Route path="/" exact component={App} />
-//       <Route path="/about" component={About} />
-//       <Route component={NotFound} />
-//     </Switch>
-//   </Router>
-// );
-
-const routes = [
-  { path: '/',
-    component: App
-  },
-  { path: '/about',
-    component: About
-  }
-]
-
-const RouteWithSubRoutes = (route) => (
-  <Route path={route.path} render={props => (
-    // pass the sub-routes down to keep nesting
-    <route.component {...props} routes={route.routes}/>
-  )}/>
-)
-
-const Routes = () => (
-  <Router>
+const RouteWithWrapper = ({ component, ...rest }) => {
+  return (
     <div>
-      {routes.map((route, i) => (
-        <RouteWithSubRoutes key={i} {...route}/>
-      ))}
+      <Header />
+      <Route {...rest} render={ () => React.createElement(component) } />
+      {/*<Footer />*/}
     </div>
+  );
+};
+
+const Routes = (props) => (
+  <Router {...props}>
+      <Switch>
+        <RouteWithWrapper exact path="/" component={Home} />
+        <RouteWithWrapper exact path="/home" component={Home} />
+        <Route exact path="/about" component={About} />
+        <RouteWithWrapper path="/contact" component={Contact} />
+        <Route path="*" component={NotFound} />
+      </Switch>
   </Router>
-)
+);
 
 export default Routes;
-

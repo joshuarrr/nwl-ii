@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import './home.css';
 
 export default class Home extends Component {
-  // static propTypes = {}
-  // static defaultProps = {}
-  // state = {}
 
   render() {
-    const { className, ...props } = this.props;
     return (
-      <div className={classnames('Contact', className)} {...props}>
+      <div>
         <h1>
           Home
         </h1>
+        <Link to="/contact">contact</Link>
       </div>
     );
   }
