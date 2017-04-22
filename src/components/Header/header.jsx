@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './header.css';
 
 export default class Header extends Component {
@@ -7,8 +6,7 @@ export default class Header extends Component {
     const { className, ...props } = this.props;
     return (
       <div className="header" {...props}>
-        <img src={logo} className="logo" alt="logo" />
-        <h2>Welcome to React</h2>
+        <h2>HEADER</h2>
       </div>
     );
   }

@@ -1,0 +1,57 @@
+body {
+  /* background: #222; */
+  background:
+    url('../../img/stars.jpg')
+    no-repeat
+    center center
+    fixed;
+  background-size: cover;
+  padding: 15vw;
+  font-family: 'Work Sans', Helvetica, sans;
+}
+
+/* Typography */
+h2 {
+  font-weight: 300;
+  font-size: 25px;
+  letter-spacing: 0.1rem;
+  line-height: 1.8;
+  color: #999;
+}
+
+a {
+  text-decoration: none;
+  color: #eee;
+}
+
+/* CSSTransitionGroup Page Transitions */
+.example-appear {
+  opacity: 0.01;
+}
+
+.example-appear.example-appear-active {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.example-enter {
+  opacity: 0.01;
+  color: red;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  color: green;
+  transition: all 1000ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+  color: blue;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  color: gold;
+  transition: all 1000ms ease-in;
+}

@@ -1,0 +1,35 @@
+.compass {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #888;
+  margin: 0 auto 5vh;
+  border-radius: 50%;
+}
+
+.needle {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  top: 25px;
+  left: 25px;
+  animation:
+    needle-spin
+    infinite 20s
+    cubic-bezier(0.680, -0.550, 0.265, 1.550);
+}
+
+@keyframes needle-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.nwl-logo {
+  width: 200px;
+  margin: 7vh auto;
+  position: relative;
+  display: block;
+}

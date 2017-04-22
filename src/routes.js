@@ -4,12 +4,13 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-
-import Header from './components/Header/header';
-import Home from './components/Home/home';
-import About from './components/About/about';
-import Contact from './components/Contact/contact';
-import NotFound from './components/NotFound/notfound';
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import Header from './components/header/header';
+import Intro from './pages/intro/intro';
+import Home from './pages/home/home';
+import About from './pages/about/about';
+import Contact from './pages/contact/contact';
+import NotFound from './pages/notfound/notfound';
 
 const RouteWithWrapper = ({ component, ...rest }) => {
   return (
@@ -23,13 +24,24 @@ const RouteWithWrapper = ({ component, ...rest }) => {
 
 const Routes = (props) => (
   <Router {...props}>
-      <Switch>
-        <RouteWithWrapper exact path="/" component={Home} />
-        <RouteWithWrapper exact path="/home" component={Home} />
-        <Route exact path="/about" component={About} />
-        <RouteWithWrapper path="/contact" component={Contact} />
-        <Route path="*" component={NotFound} />
-      </Switch>
+    <Route render={({ location }) => (
+      <CSSTransitionGroup
+        transitionName="example"
+        transitionAppear={true}
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={1000}
+        transitionLeaveTimeout={1000}
+      >
+        <Switch key={location.key} location={location}>
+          <RouteWithWrapper exact path="/" component={Home} />
+          <Route exact path="/intro" component={Intro} />
+          <RouteWithWrapper exact path="/home" component={Home} />
+          <Route exact path="/about" component={About} />
+          <RouteWithWrapper path="/contact" component={Contact} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </CSSTransitionGroup>
+      )}/>
   </Router>
 );
 
