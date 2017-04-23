@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 import Wrapper from '../../components/wrapper/wrapper';
@@ -115,8 +116,35 @@ export default class Intro extends Component {
       return element;
   }
 
+  randRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  randSign() {
+    return Math.random() > 0.5 ? 1 : -1;
+  }
+
+  componentDidMount = () => {
+    const el = ReactDOM.findDOMNode(this);
+    const spans = el.querySelectorAll('h2 span');
+    for (let i = 0; i < spans.length; i++) {
+      const x = this.randRange(3000, 5000) * this.randSign();
+      const y = this.randRange(3000, 5000) * this.randSign();
+      const z = this.randRange(3000, 5000) * this.randSign();
+      const rx = this.randRange(0, 1);
+      const ry = this.randRange(0, 1);
+      const rz = this.randRange(0, 1);
+      const theta = this.randRange(300, 900);
+      const animationStyle = `translate3d(${x}px, ${y}px, ${z}px) rotate3d(${rx}, ${ry}, ${rz}, ${theta}deg)`;
+      spans[i].addEventListener('mouseenter', () => spans[i].style.transform = animationStyle);
+      // spans[i].style.transform = animationStyle;
+      // console.log(animationStyle, spans[i].style.transform);
+    }
+
+  }
+
   render() {
-    const str = `NW Lights is a product design & management consultancy lead by <a href="andres">Andres de Lucca</a> and <a href="joshua">Joshua Richey</a>. With years of experience in <a href="design">human centered design</a> practices and <a href="agile">agile product development</a>, our <a href="expertise">expertise</a> enables us to analyze your team's efficacy, gauge your impact, and help you tune your processes to make your lean product development hum. <a href="contact">Get in touch</a> if you'd like to talk.`
+    const str = `NW Lights is a product design & management consultancy lead by <a href="andres">Andres de Lucca</a> and <a href="joshua">Joshua Richey</a>. With years of experience in <a href="./design">human centered design</a> practices and <a href="agile">agile product development</a>, our <a href="expertise">expertise</a> enables us to analyze your team's efficacy, gauge your impact, and help you tune your processes to make your lean product development hum. <a href="contact">Get in touch</a> if you'd like to talk.`
     const introcopy = this.spanWrapper(str);
 
     return (
@@ -125,9 +153,6 @@ export default class Intro extends Component {
           <div className="compass">
             <img className="needle" src={Needle} alt="needle" />
           </div>
-{/*        <h1>
-          Validate your direction.
-        </h1>*/}
 
         <h2 dangerouslySetInnerHTML={{__html: introcopy}} />
         <img className="nwl-logo" src={Logo} alt="NW Lights logo" />
