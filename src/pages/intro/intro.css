@@ -4,6 +4,7 @@
   border: 1px solid #888;
   margin: 0 auto 5vh;
   border-radius: 50%;
+  opacity: 0.6;
 }
 
 .needle {
@@ -34,7 +35,11 @@
   display: block;
 }
 
-h2 > span {
+h2 span {
   display: inline-block;
-  transition: transform 3s;
+  transition: transform 2.2s ease-out, opacity 2.2s;
+}
+
+h2.initialized span {
+  transition: transform 3s ease-in-out, opacity 3s;
 }
