@@ -78,6 +78,7 @@ export default class Intro extends Component {
       }
     this.removeElement(node);
   }
+
   getNodes = (parentNode, nodeName, _nodes) => {
     var childNodes = parentNode.childNodes,
         nodes = _nodes || [],
@@ -112,7 +113,6 @@ export default class Intro extends Component {
   createSpan = () => {
       var element = document.createElement('span');
           // element.setAttribute('class', 'foo');
-
       return element;
   }
 
@@ -138,7 +138,7 @@ export default class Intro extends Component {
   }
 
   componentDidMount = () => {
-    return;
+  return;
     const el = ReactDOM.findDOMNode(this);
     // find all the immediate children of the h2, ignoring the links
     const spans = el.querySelectorAll('h2 > span');
@@ -149,9 +149,9 @@ export default class Intro extends Component {
 
     // set up the initial (far offscreen) rotations and translations
     for (let i = 0; i < spans.length; i++) {
-      const x = this.randRange(1200, 2400) * this.randSign();
-      const y = this.randRange(1200, 2400) * this.randSign();
-      const z = this.randRange(1200, 2400) * this.randSign();
+      const x = this.randRange(1200, 1800) * this.randSign();
+      const y = this.randRange(1200, 1800) * this.randSign();
+      const z = this.randRange(1200, 1800) * this.randSign();
       const translateStyle = `translate3d(${x}px, ${y}px, ${z}px)`;
       this.rotatify(spans[i], translateStyle);
       spans[i].style.opacity = this.randRange(0.3, 0.6);
@@ -207,24 +207,24 @@ export default class Intro extends Component {
   }
 
   render() {
-    const str = `NW Lights is a product design & management consultancy lead by <a href="andres">Andres de Lucca</a> and <a href="joshua">Joshua Richey</a>. With years of experience in <a href="./design">human centered design</a> practices and agile <a href="agile">product development</a>, our <a href="expertise">expertise</a> enables us to analyze your team's efficacy, gauge your impact, and help you tune your processes to make your lean product development hum. <a href="contact">Get in touch</a> if you'd like to talk.`
+    const str = `NW Lights is a product design & management consultancy lead by <a href="andres">Andres</a> de Lucca and <a href="joshua">Joshua</a> Richey. With years of experience in <a href="./design">human centered design</a> practices and agile <a href="agile">product development</a>, our <a href="expertise">expertise</a> enables us to analyze your team's efficacy, gauge your impact, and help you tune your processes to make your lean product development hum. <a href="contact">Get in touch</a> if you'd like to talk.`
     const introcopy = this.spanWrapper(str);
 
     return (
       <Wrapper>
         <Helmet title="Intro" />
-          <div className="compass">
-            <img className="needle" src={Needle} alt="needle" />
-          </div>
-
-        {/* <h2 dangerouslySetInnerHTML={{__html: introcopy}} /> */}
+        <div className="compass">
+          <img className="needle" src={Needle} alt="needle" />
+        </div>
         <Explody>
-          NW Lights is a product design & management consultancy lead by <a href="andres">Andres de Lucca</a>
-           and <a href="joshua">Joshua Richey</a>. With years of experience in <a href="./design">human centered design</a>
-           practices and agile <a href="agile">product development</a>, our
-           <a href="expertise">expertise</a> enables us to analyze your team's efficacy,
-           gauge your impact, and help you tune your processes to make your lean product
-           development hum. <a href="contact">Get in touch</a> if you'd like to talk.
+          NW Lights is a product design & management consultancy lead
+          by <Link to="andres">Andres</Link> de Lucca and <Link to="joshua">Joshua</Link>
+          Richey. With years of experience in <Link to="./design">human centered
+          design</Link> practices and agile <Link to="agile">product
+          development</Link>, our <Link to="expertise">expertise</Link> enables us to
+          analyze your team's efficacy, gauge your impact, and help you tune
+          your processe. <Link to="contact">Get
+          in touch</Link> if you'd like to talk.
         </Explody>
         <img className="nwl-logo" src={Logo} alt="NW Lights logo" />
       </Wrapper>
@@ -243,31 +243,37 @@ class Explody extends React.Component {
       if (typeof child === "string") {
         // regular text child
         child.split("").forEach(c => {
-          this.state.elements.push(this.defaultState());
+          this.state.elements.push(this.randomState(10));
         })
       }
     });
+    setTimeout(() => this.implodeAll(), 10);
   }
 
   render = () => {
     const children = [];
     let childOffset = 0;
     React.Children.forEach(this.props.children, (child) => {
+      let lastWordWhiteSpace = false;
+      if (child[0] === " ") {
+        children.push(" ");
+      }
       if (typeof child === "string") {
         // regular text child
-        child.split(" ").map(c => {
-          console.log(child, "binding with", childOffset);
-          const onMouseEnter = this.explode.bind(null, childOffset);
-          const onMouseLeave = this.implode.bind(null, childOffset);
+        child.split(/\s+/).map(c => {
+          if (c === "") {
+            return;
+          }
           const span = <span
             key={childOffset}
-            style={this.styleFor(childOffset)}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}>{c}</span>;
+            style={this.styleFor(childOffset)}>{c}</span>;
           children.push(span);
-          children.push(<span>{" "}</span>);
+          if (!lastWordWhiteSpace) {
+            children.push(" ");
+          }
           childOffset++;
-        });;
+          lastWordWhiteSpace = /\s/.test(c);
+        });
       } else if (typeof child.type === "string") {
         // React.dom component (<a> <div> etc)
         children.push(child);
@@ -276,10 +282,14 @@ class Explody extends React.Component {
         children.push(child);
       }
     });
-    return <h2>{children}</h2>;
+    return <h2
+      onMouseEnter={() => this.explodeAll()}
+      onMouseLeave={() => this.implodeAll()}>{children}</h2>;
   }
 
   defaultState = () => ({
+    exploded: false,
+    hovering: false,
     translate: {
       x: 0,
       y: 0,
@@ -306,20 +316,28 @@ class Explody extends React.Component {
     };
   }
 
-  randomState = (factor = 1) => {
+  randomTranslate = (factor = 1) => ({
+    x: this.randRange(200, 400) * factor * this.randSign(),
+    y: this.randRange(200, 400) * factor * this.randSign(),
+    z: this.randRange(200, 400) * factor * this.randSign()
+  })
+
+  randomRotate = (normal, factor = 1) => ({
+    nx: normal.x,
+    ny: normal.y,
+    nz: normal.z,
+    // adjust # of rotations
+    rho: this.randRange(100, 300) * factor
+  })
+
+  randomState = (factor = 1, hovering = false) => {
     const normal = this.randomNormal();
     return {
-      translate: {
-        x: this.randRange(200, 400) * this.randSign(),
-        y: this.randRange(200, 400) * this.randSign(),
-        z: this.randRange(200, 400) * this.randSign()
-      },
-      rotate: {
-        nx: normal.x,
-        ny: normal.y,
-        nz: normal.z,
-        rho: this.randRange(300, 900)
-      },
+      exploded: true,
+      hovering: hovering,
+      translate: this.randomTranslate(factor),
+      rotate: this.randomRotate(normal, factor),
+      // adjust transparency
       opacity: this.randRange(0.3, 0.7)
     }
   }
@@ -334,11 +352,11 @@ class Explody extends React.Component {
 
   styleFor = (index) => {
     const element = this.state.elements[index];
-    console.log("style for", index, element);
     if (element === undefined) {
       return {};
     }
     const {translate: {x, y, z}, rotate: {nx, ny, nz, rho}, opacity} = element;
+    console.log(index, `translate3d(${x}px, ${y}px, ${z}px) rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`);
     return {
       transform: `translate3d(${x}px, ${y}px, ${z}px) rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`,
       opacity: opacity
@@ -348,14 +366,52 @@ class Explody extends React.Component {
   explode = (index) => {
     const elementsCopy = this.state.elements.slice();
     elementsCopy[index] = this.randomState();
-    console.log('explode', index, elementsCopy[index]);
+    // console.log('explode', index, elementsCopy[index]);
     this.setState({elements: elementsCopy});
   }
 
   implode = (index) => {
     const elementsCopy = this.state.elements.slice();
     elementsCopy[index] = this.defaultState();
-    console.log('implode', index, elementsCopy[index]);
+    // console.log('implode', index, elementsCopy[index]);
     this.setState({elements: elementsCopy});
+  }
+
+  intervals = []
+
+  explodeAll = () => {
+    console.log('explodAll');
+    const elementsCopy = this.state.elements.map(() => this.randomState());
+    this.setState({elements: elementsCopy});
+    this.intervals.push(setInterval(() => this.keepHovering(), 3000));
+  }
+
+  keepHovering = () => {
+    console.log('keepHovering');
+    const elementsCopy = this.state.elements.map((el, i) => {
+      const rotate = this.randomRotate(this.randomNormal());
+      console.log(i, el);
+      return {
+        exploded: el.exploded,
+        hovering: el.hovering,
+        translate: {
+          x: el.translate.x,
+          y: el.translate.y,
+          z: el.translate.z
+        },
+        rotate: rotate,
+        opacity: el.opacity
+      };
+    });
+    console.log(elementsCopy);
+    this.setState({elements: elementsCopy}, () => console.log('keep on hovering yadick'));
+  }
+
+  implodeAll = () => {
+    console.log('implodeAll');
+    const elementsCopy = this.state.elements.map(() => this.defaultState());
+    this.setState({elements: elementsCopy});
+    this.intervals.forEach(i => clearInterval(i));
+    this.intervals.length = 0;
   }
 }
