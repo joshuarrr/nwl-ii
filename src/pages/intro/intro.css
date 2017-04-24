@@ -35,11 +35,43 @@
   display: block;
 }
 
-h2 span {
+/* Explody animation */
+/* ----------------- */
+.explodeme span {
   display: inline-block;
-  transition: transform 2.2s ease-out, opacity 2.2s;
 }
 
-h2.initialized span {
-  transition: transform 3s ease-in-out, opacity 3s;
+/* Pre-initialized imploding */
+.imploding > span {
+  /* translate */
+  transition: transform 3s cubic-bezier(0,.3,.4,1), opacity 10s;
 }
+
+.imploding span > span {
+  /* rotation */
+  transition: transform 3s cubic-bezier(0,.3,.4,1);
+}
+
+/* Post Initialized  imploding */
+.initialized.imploding span {
+  /* translate */
+  transition: transform 2s cubic-bezier(0,.3,.4,1), opacity 10s;
+}
+
+.initialized.imploding span > span {
+  /* rotation */
+  transition: transform 2s cubic-bezier(0,.3,.4,1);
+}
+
+/* Post Initialized  Explode */
+.initialized.exploding span {
+  /* translate */
+  transition: transform 3s cubic-bezier(0,.3,.4,1), opacity 10s;
+}
+
+.initialized.exploding span > span {
+  /* rotation */
+  transition: transform 30s cubic-bezier(0,.3,.4,1);
+}
+
+
