@@ -27,20 +27,6 @@ export default class Explody extends React.Component {
     return Math.random() > 0.5 ? 1 : -1;
   }
 
-  // rotateStyle(factor = 100) {
-  //   const rx = this.randRange(0, 1);
-  //   const ry = this.randRange(0, 1);
-  //   const rz = this.randRange(0, 1);
-  //   // Number of Rotations
-  //   const theta = this.randRange(300, 700) * this.randSign() * factor;
-  //   // console.log(factor, theta);
-  //   return `rotate3d(${rx}, ${ry}, ${rz}, ${theta}deg)`;
-  // }
-
-  // rotatify(el, translateStyle, factor = 1) {
-  //   el.style.transform = translateStyle + " " + this.rotateStyle(factor);
-  // }
-
   componentDidMount = () => {
     const explodeme = document.querySelector('.explodeme');
     // console.log('* explodeme = ' + explodeme + '\n');
