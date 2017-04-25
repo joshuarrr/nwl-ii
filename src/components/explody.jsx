@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 
 export default class Explody extends React.Component {
   constructor(props, context) {
@@ -17,14 +17,6 @@ export default class Explody extends React.Component {
       }
     });
     setTimeout(() => this.implodeAll(), 100);
-  }
-
-   randRange(min = 0, max = 1) {
-    return Math.random() * (max - min) + min;
-  }
-
-  randSign() {
-    return Math.random() > 0.5 ? 1 : -1;
   }
 
   componentDidMount = () => {
@@ -92,6 +84,7 @@ export default class Explody extends React.Component {
       nz: 0,
       rho: 0
     },
+    scale: 1,
     opacity: 1
   })
 
@@ -118,7 +111,7 @@ export default class Explody extends React.Component {
     ny: normal.y,
     nz: normal.z,
     // adjust # of rotations
-    rho: this.randRange(500, 1200) * factor
+    rho: this.randRange(-300, 400) * factor
   })
 
   randomState = (factor = 1, hovering = false) => {
@@ -128,6 +121,8 @@ export default class Explody extends React.Component {
       hovering: hovering,
       translate: this.randomTranslate(factor),
       rotate: this.randomRotate(normal, factor),
+      // adjust scale
+      scale: this.randRange(0.3, 1.7),
       // adjust transparency
       opacity: this.randRange(0.3, 0.7)
     }
@@ -147,10 +142,11 @@ export default class Explody extends React.Component {
     if (element === undefined) {
       return {};
     }
-    const {translate: {x, y, z}, opacity} = element;
+    const {translate: {x, y, z}, scale, opacity} = element;
     // console.log(index, `translate3d(${x}px, ${y}px, ${z}px) rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`);
     return {
       transform: `translate3d(${x}px, ${y}px, ${z}px`,
+      scale: scale,
       opacity: opacity
     };
   }
