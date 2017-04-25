@@ -6,21 +6,26 @@ import {
 } from 'react-router-dom';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import Header from './components/header/header';
+
+// Import routes
 import Intro from './pages/intro/intro';
-import Home from './pages/home/home';
-import About from './pages/about/about';
+import Andres from './pages/andres/andres';
+import Joshua from './pages/joshua/joshua';
+import Product from './pages/product/product';
+import Design from './pages/design/design';
+import Expertise from './pages/expertise/expertise';
 import Contact from './pages/contact/contact';
 import NotFound from './pages/notfound/notfound';
 
-const RouteWithWrapper = ({ component, ...rest }) => {
-  return (
-    <div>
-      <Header />
-      <Route {...rest} render={ () => React.createElement(component) } />
-      {/*<Footer />*/}
-    </div>
-  );
-};
+// const RouteWithWrapper = ({ component, ...rest }) => {
+//   return (
+//     <div>
+//       <Header />
+//       <Route {...rest} render={ () => React.createElement(component) } />
+//       {/*<Footer />*/}
+//     </div>
+//   );
+// };
 
 const Routes = (props) => (
   <Router {...props}>
@@ -29,15 +34,18 @@ const Routes = (props) => (
         transitionName="example"
         transitionAppear={true}
         transitionAppearTimeout={500}
-        transitionEnterTimeout={1000}
-        transitionLeaveTimeout={1000}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
       >
         <Switch key={location.key} location={location}>
-          <RouteWithWrapper exact path="/" component={Home} />
+          <Route exact path="/" component={Intro} />
           <Route exact path="/intro" component={Intro} />
-          <RouteWithWrapper exact path="/home" component={Home} />
-          <Route exact path="/about" component={About} />
-          <RouteWithWrapper path="/contact" component={Contact} />
+          <Route exact path="/andres" component={Andres} />
+          <Route exact path="/joshua" component={Joshua} />
+          <Route exact path="/product" component={Product} />
+          <Route exact path="/design" component={Design} />
+          <Route exact path="/expertise" component={Expertise} />
+          <Route path="/contact" component={Contact} />
           <Route path="*" component={NotFound} />
         </Switch>
       </CSSTransitionGroup>

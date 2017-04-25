@@ -39,6 +39,7 @@
 /* ----------------- */
 .explodeme span {
   display: inline-block;
+  user-select: none;
 }
 
 /* Pre-initialized -- Imploding */
@@ -55,18 +56,18 @@
 /* Post Initialized -- Imploding */
 .initialized.imploding > span {
   /* translate */
-  transition: transform 2s cubic-bezier(0,.3,.4,1), opacity 10s;
+  transition: transform 2.3s cubic-bezier(0,.3,.4,1), opacity 10s;
 }
 
 .initialized.imploding span > span {
   /* rotation */
-  transition: transform 2.5s cubic-bezier(.53,.01,.49,1);
+  transition: transform 2.7s cubic-bezier(.53,.01,.49,1);
 }
 
 /* Post Initialized -- Exploding */
 .initialized.exploding > span {
   /* translate */
-  transition: transform 3s cubic-bezier(0,.3,.4,1), opacity 10s;
+  transition: transform 3s cubic-bezier(.05,.02,.4,1), opacity 10s;
 }
 
 .initialized.exploding span > span {
