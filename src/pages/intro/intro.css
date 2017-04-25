@@ -37,9 +37,13 @@
 
 /* Explody animation */
 /* ----------------- */
+.explodeme {
+  user-select: none;
+  cursor: default;
+}
+
 .explodeme span {
   display: inline-block;
-  user-select: none;
 }
 
 /* Pre-initialized -- Imploding */

@@ -38,7 +38,7 @@ export default class Explody extends React.Component {
         // regular text child
         child.split(/\s+/).map(c => {
           if (c === "") {
-            return null;
+            return;
           }
           // wrap each word in a set of spans
           const span = <span
@@ -55,7 +55,6 @@ export default class Explody extends React.Component {
           }
           childOffset++;
           lastWordWhiteSpace = /\s/.test(c);
-          return null;
         });
       } else if (typeof child.type === "string") {
         // React.dom component (<a> <div> etc)
