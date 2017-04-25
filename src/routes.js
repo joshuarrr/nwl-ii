@@ -5,7 +5,6 @@ import {
   Switch
 } from 'react-router-dom';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
-import Header from './components/header/header';
 
 // Import routes
 import Intro from './pages/intro/intro';
@@ -16,16 +15,6 @@ import Design from './pages/design/design';
 import Expertise from './pages/expertise/expertise';
 import Contact from './pages/contact/contact';
 import NotFound from './pages/notfound/notfound';
-
-// const RouteWithWrapper = ({ component, ...rest }) => {
-//   return (
-//     <div>
-//       <Header />
-//       <Route {...rest} render={ () => React.createElement(component) } />
-//       {/*<Footer />*/}
-//     </div>
-//   );
-// };
 
 const Routes = (props) => (
   <Router {...props}>
