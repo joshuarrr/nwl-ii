@@ -8,14 +8,17 @@ export default class Explody extends React.Component {
   }
 
   componentWillMount = () => {
-    React.Children.forEach(this.props.children, (child) => {
-      if (typeof child === "string") {
-        // regular text child
-        child.split("").forEach(c => {
-          this.state.elements.push(this.randomState(10));
-        })
-      }
-    });
+    React.Children.forEach(
+      typeof this.props.children === 'function'
+      ? this.props.children(this.explodeAll).props.children
+      : this.props.children, (child) => {
+        if (typeof child === "string") {
+          // regular text child
+          child.split("").forEach(c => {
+            this.state.elements.push(this.randomState(10));
+          })
+        }
+      });
     setTimeout(() => this.implodeAll(), 100);
   }
 
@@ -26,47 +29,7 @@ export default class Explody extends React.Component {
     // console.log( 'initialized = ' + el.querySelector('h2') );
   }
 
-  render = () => {
-    const children = [];
-    let childOffset = 0;
-      React.Children.forEach(
-        typeof this.props.children === 'function'
-          ? this.props.children(this.explodeAll).props.children
-          : this.props.children, (child) => {
-        let lastWordWhiteSpace = false;
-      if (child[0] === " ") {
-        children.push(" ");
-      }
-      if (typeof child === "string") {
-        // regular text child
-        child.split(/\s+/).map(c => {
-          if (c === "") {
-            return;
-          }
-          // wrap each word in a set of spans
-          const span = <span key={childOffset} className='word-wrapper init' style={this.styleFor(childOffset)}>
-              <span style={this.innerStyleFor(childOffset)}>
-                {c}
-              </span>
-            </span>;
-          children.push(span);
-          if (!lastWordWhiteSpace) {
-            children.push(" ");
-          }
-          childOffset++;
-          lastWordWhiteSpace = /\s/.test(c);
-        });
-      } else if (typeof child.type === "string") {
-        // React.dom component (<a> <div> etc)
-        children.push(child);
-        // console.log(child); // = NADA
-      } else {
-        // custom React Component
-        children.push(child);
-      }
-    });
-    return <h2 className='explodeme'>{children}</h2>;
-  }
+
 
   defaultState = () => ({
     exploded: false,
@@ -82,7 +45,6 @@ export default class Explody extends React.Component {
       nz: 0,
       rho: 0
     },
-    scale: 1,
     opacity: 1
   })
 
@@ -119,8 +81,6 @@ export default class Explody extends React.Component {
       hovering: hovering,
       translate: this.randomTranslate(factor),
       rotate: this.randomRotate(normal, factor),
-      // adjust scale
-      scale: this.randRange(0.3, 1.7),
       // adjust transparency
       opacity: this.randRange(0.3, 0.7)
     }
@@ -140,11 +100,10 @@ export default class Explody extends React.Component {
     if (element === undefined) {
       return {};
     }
-    const {translate: {x, y, z}, scale, opacity} = element;
-    // console.log(index, `translate3d(${x}px, ${y}px, ${z}px) rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`);
+    const {translate: {x, y, z}, opacity} = element;
+    // console.log(index, `translate3d(${x}px, ${y}px, ${z}px)`);
     return {
       transform: `translate3d(${x}px, ${y}px, ${z}px`,
-      scale: scale,
       opacity: opacity
     };
   }
@@ -156,24 +115,10 @@ export default class Explody extends React.Component {
       return {};
     }
     const {rotate: {nx, ny, nz, rho}} = element;
-    // console.log(index, `translate3d(${x}px, ${y}px, ${z}px) rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`);
+    // console.log(index, `rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`);
     return {
       transform: `rotate3d(${nx}, ${ny}, ${nz}, ${rho}deg)`
     };
-  }
-
-  explode = (index) => {
-    const elementsCopy = this.state.elements.slice();
-    elementsCopy[index] = this.randomState();
-    // console.log('explode', index, elementsCopy[index]);
-    this.setState({elements: elementsCopy});
-  }
-
-  implode = (index) => {
-    const elementsCopy = this.state.elements.slice();
-    elementsCopy[index] = this.defaultState();
-    // console.log('implode', index, elementsCopy[index]);
-    this.setState({elements: elementsCopy});
   }
 
   explodeAll = () => {
@@ -184,7 +129,7 @@ export default class Explody extends React.Component {
     // console.log('explodAll');
     const elementsCopy = this.state.elements.map(() => this.randomState());
     // console.log('* elementsCopy = ' + elementsCopy + '\n');
-    console.log('* this.state.elements = ' + this.state.elements + '\n');
+    // console.log('* this.state.elements = ' + this.state.elements + '\n');
     this.setState({elements: elementsCopy});
   }
 
@@ -196,5 +141,48 @@ export default class Explody extends React.Component {
     // console.log('implodeAll');
     const elementsCopy = this.state.elements.map(() => this.defaultState());
     this.setState({elements: elementsCopy});
+    // console.log('* elementsCopy = ' + elementsCopy + '\n');
+  }
+
+  render = () => {
+    const children = [];
+    let childOffset = 0;
+      React.Children.forEach(
+        typeof this.props.children === 'function'
+          ? this.props.children(this.explodeAll, this.implodeAll).props.children
+          : this.props.children, (child) => {
+        let lastWordWhiteSpace = false;
+      if (child[0] === " ") {
+        children.push(" ");
+      }
+      if (typeof child === "string") {
+        // regular text child
+        child.split(/\s+/).map(c => {
+          if (c === "") {
+            return;
+          }
+          // wrap each word in a set of spans
+          const span = <span key={childOffset} className='word-wrapper init' style={this.styleFor(childOffset)}>
+              <span style={this.innerStyleFor(childOffset)}>
+                {c}
+              </span>
+            </span>;
+          children.push(span);
+          if (!lastWordWhiteSpace) {
+            children.push(" ");
+          }
+          childOffset++;
+          lastWordWhiteSpace = /\s/.test(c);
+        });
+      } else if (typeof child.type === "string") {
+        // React.dom component (<a> <div> etc)
+        children.push(child);
+        // console.log(child); // = NADA
+      } else {
+        // custom React Component
+        children.push(child);
+      }
+    });
+    return <h2 className='explodeme'>{children}</h2>;
   }
 }

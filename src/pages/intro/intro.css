@@ -5,46 +5,49 @@
   cursor: default;
 }
 
-.explodeme div {
-  display: none;
-}
-
-.word-wrapper {
+.word-wrapper,
+.word-wrapper > span {
   display: inline-block;
 }
 
 /* Pre-initialized -- Imploding */
 .imploding .word-wrapper {
   /* translate */
-  transition: transform 3s cubic-bezier(0,.3,.4,1), opacity 10s;
+  transition:
+    transform 3s cubic-bezier(0,.3,.4,1),
+    opacity 10s;
 }
 
 .imploding .word-wrapper > span {
   /* rotation */
-  transition: transform 3s cubic-bezier(0,.3,.4,1);
+  transition:
+    transform 3s cubic-bezier(0,.3,.4,1);
 }
 
 /* Post Initialized -- Imploding */
 .initialized.imploding .word-wrapper {
   /* translate */
-  transition: transform 2.3s cubic-bezier(0,.3,.4,1), opacity 10s;
+  transition:
+    transform 3s cubic-bezier(0,.3,.4,1),
+    opacity 10s;
 }
 
 .initialized.imploding .word-wrapper > span {
   /* rotation */
-  transition: transform 2.7s cubic-bezier(.53,.01,.49,1);
-  color: red;
+  transition:
+    transform 3s cubic-bezier(.1,.01,.4,1);
 }
 
 /* Post Initialized -- Exploding */
 .initialized.exploding .word-wrapper {
   /* translate */
-  transition: transform 3s cubic-bezier(.05,.02,.4,1), opacity 10s;
+  transition:
+    transform 3s cubic-bezier(.05,.02,.4,1),
+    opacity 10s;
 }
 
 .initialized.exploding .word-wrapper > span {
   /* rotation */
-  transition: transform 15s cubic-bezier(0,.3,.4,1);
+  transition:
+    transform 15s cubic-bezier(0,.3,.4,1);
 }
-
-
