@@ -5,6 +5,7 @@ var autoprefixer = require('autoprefixer');
 var calc = require('postcss-calc');
 var functions = require('postcss-functions');
 var nested = require('postcss-nested');
+var responsiveType = require('postcss-responsive-type');
 
 // RCA vars
 var webpack = require('webpack');
@@ -180,13 +181,14 @@ module.exports = {
         ]
       }),
 
-      // ... but i don't.
+      // ... but i use a lot of other plugins.
       functions({
         glob: path.join(__dirname, '../src/styles/functions/', '*.js')
       }),
 
       calc,
-      nested
+      nested,
+      responsiveType
     ];
   },
   plugins: [
