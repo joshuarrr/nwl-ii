@@ -5,39 +5,44 @@
   cursor: default;
 }
 
-.explodeme span {
+.explodeme div {
+  display: none;
+}
+
+.word-wrapper {
   display: inline-block;
 }
 
 /* Pre-initialized -- Imploding */
-.imploding > span {
+.imploding .word-wrapper {
   /* translate */
   transition: transform 3s cubic-bezier(0,.3,.4,1), opacity 10s;
 }
 
-.imploding span > span {
+.imploding .word-wrapper > span {
   /* rotation */
   transition: transform 3s cubic-bezier(0,.3,.4,1);
 }
 
 /* Post Initialized -- Imploding */
-.initialized.imploding > span {
+.initialized.imploding .word-wrapper {
   /* translate */
   transition: transform 2.3s cubic-bezier(0,.3,.4,1), opacity 10s;
 }
 
-.initialized.imploding span > span {
+.initialized.imploding .word-wrapper > span {
   /* rotation */
   transition: transform 2.7s cubic-bezier(.53,.01,.49,1);
+  color: red;
 }
 
 /* Post Initialized -- Exploding */
-.initialized.exploding > span {
+.initialized.exploding .word-wrapper {
   /* translate */
   transition: transform 3s cubic-bezier(.05,.02,.4,1), opacity 10s;
 }
 
-.initialized.exploding span > span {
+.initialized.exploding .word-wrapper > span {
   /* rotation */
   transition: transform 15s cubic-bezier(0,.3,.4,1);
 }

@@ -29,8 +29,11 @@ export default class Explody extends React.Component {
   render = () => {
     const children = [];
     let childOffset = 0;
-    React.Children.forEach(this.props.children, (child) => {
-      let lastWordWhiteSpace = false;
+      React.Children.forEach(
+        typeof this.props.children === 'function'
+          ? this.props.children(this.explodeAll).props.children
+          : this.props.children, (child) => {
+        let lastWordWhiteSpace = false;
       if (child[0] === " ") {
         children.push(" ");
       }
@@ -41,10 +44,7 @@ export default class Explody extends React.Component {
             return;
           }
           // wrap each word in a set of spans
-          const span = <span
-            key={childOffset}
-            className='init'
-            style={this.styleFor(childOffset)}>
+          const span = <span key={childOffset} className='word-wrapper init' style={this.styleFor(childOffset)}>
               <span style={this.innerStyleFor(childOffset)}>
                 {c}
               </span>
@@ -59,15 +59,13 @@ export default class Explody extends React.Component {
       } else if (typeof child.type === "string") {
         // React.dom component (<a> <div> etc)
         children.push(child);
+        // console.log(child); // = NADA
       } else {
         // custom React Component
         children.push(child);
       }
     });
-    return <h2
-      className='explodeme'
-      onMouseEnter={() => this.explodeAll()}
-      onMouseLeave={() => this.implodeAll()}>{children}</h2>;
+    return <h2 className='explodeme'>{children}</h2>;
   }
 
   defaultState = () => ({
@@ -185,6 +183,8 @@ export default class Explody extends React.Component {
     explodeme.classList.remove('imploding');
     // console.log('explodAll');
     const elementsCopy = this.state.elements.map(() => this.randomState());
+    // console.log('* elementsCopy = ' + elementsCopy + '\n');
+    console.log('* this.state.elements = ' + this.state.elements + '\n');
     this.setState({elements: elementsCopy});
   }
 

@@ -11,12 +11,12 @@ export default class Intro extends Component {
     return (
       <Wrapper>
         <Helmet title="Intro" />
-        <Explody>
-          NW Lights is a product design & management consultancy lead
-          by <Link to="andres">Andres</Link> de Lucca and <Link to="joshua">Joshua</Link> Richey. With years of experience in agile <Link to="product">product
-          </Link> development and human centered <Link to="./design">design</Link>, our <Link to="expertise">expertise</Link> enables us to
-          validate your direction. Put simply, if you're working on a web app, we can either build it for you, or help you get it done. <Link to="contact">Get
-          in touch</Link> if you'd like to talk.
+        <Explody>{
+          (explodeAll) =>
+            <div>
+              NW Lights is a product design & management consultancy lead by <Link to="andres" onMouseEnter={explodeAll}>Andres</Link> de Lucca and <Link to="joshua" onMouseEnter={explodeAll}>Joshua</Link> Richey. With years of experience in agile <Link to="product" onMouseEnter={explodeAll}>product </Link> development and human centered <Link to="./design" onMouseEnter={explodeAll}>design</Link>, our <Link to="expertise" onMouseEnter={explodeAll}>expertise</Link> enables us to validate your direction. Put simply, if you're working on a web app, we can either build it for you, or help you get it done. <Link to="contact" onMouseEnter={explodeAll}>Get in touch</Link> if you'd like to talk.
+            </div>
+          }
         </Explody>
       </Wrapper>
     );
