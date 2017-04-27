@@ -29,8 +29,6 @@ export default class Explody extends React.Component {
     // console.log( 'initialized = ' + el.querySelector('h2') );
   }
 
-
-
   defaultState = () => ({
     exploded: false,
     hovering: false,
@@ -61,9 +59,9 @@ export default class Explody extends React.Component {
   }
 
   randomTranslate = (factor = 1) => ({
-    x: this.randRange(200, 500) * factor * this.randSign(),
-    y: this.randRange(200, 500) * factor * this.randSign(),
-    z: this.randRange(200, 500) * factor * this.randSign()
+    x: this.randRange(200, 800) * factor * this.randSign(),
+    y: this.randRange(200, 800) * factor * this.randSign(),
+    z: this.randRange(200, 800) * factor * this.randSign()
   })
 
   randomRotate = (normal, factor = 1) => ({
