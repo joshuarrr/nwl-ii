@@ -160,7 +160,7 @@ export default class Explody extends React.Component {
             return;
           }
           // wrap each word in a set of spans
-          const span = <span key={childOffset} className='word-wrapper init' style={this.styleFor(childOffset)}>
+          const span = <span key={childOffset} className='word-wrapper' style={this.styleFor(childOffset)}>
               <span style={this.innerStyleFor(childOffset)}>
                 {c}
               </span>

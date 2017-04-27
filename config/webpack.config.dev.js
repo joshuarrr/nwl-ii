@@ -3,6 +3,8 @@
 // PostCSS Plugins
 var autoprefixer = require('autoprefixer');
 var calc = require('postcss-calc');
+var functions = require('postcss-functions');
+var nested = require('postcss-nested');
 
 // RCA vars
 var webpack = require('webpack');
@@ -14,7 +16,7 @@ var getClientEnvironment = require('./env');
 var paths = require('./paths');
 
 
-
+var path = require('path');
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 var publicPath = '/';
@@ -166,7 +168,7 @@ module.exports = {
     ]
   },
 
-  // We use PostCSS for autoprefixing only.
+  // RCA uses PostCSS for autoprefixing only.
   postcss: function() {
     return [
       autoprefixer({
@@ -177,7 +179,14 @@ module.exports = {
           'not ie < 9', // React doesn't support IE8 anyway
         ]
       }),
-      calc
+
+      // ... but i don't.
+      functions({
+        glob: path.join(__dirname, '../src/styles/functions/', '*.js')
+      }),
+
+      calc,
+      nested
     ];
   },
   plugins: [
