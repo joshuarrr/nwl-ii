@@ -6,8 +6,23 @@ body {
     center center
     fixed;
   background-size: cover;
-  padding: 10vh 15vw;
   font-family: 'Work Sans', Helvetica, sans;
+  padding: 5vh 10vw;
+
+  @media w(768) {
+    padding-left: 15vw;
+    padding-right: 15vw;
+  }
+
+  @media w(1024) {
+    padding-left: 20vw;
+    padding-right: 20vw;
+  }
+
+  @media w(1280) {
+    padding-left: 25vw;
+    padding-right: 25vw;
+  }
 }
 
 /* Typography */
@@ -18,7 +33,7 @@ h2 {
   line-height: 1.8;
   color: #999;
   /* font size with postcss-responsive-type */
-  font-size: responsive 18px 28px; /* min-size, max-size */
+  font-size: responsive 18px 25px; /* min-size, max-size */
   font-range: 420px 1650px; /* viewport widths between which font-size is fluid */
 }
 
@@ -27,11 +42,16 @@ a {
   color: #eee;
 }
 
-
 /* Header */
+/* compass logo */
+$compassW: 80px;
+$compassH: $compassW;
+$needleW: calc($compassW / 2);
+$needlePos: calc($needleW / 2);
+
 .compass {
-  width: 100px;
-  height: 100px;
+  width: $compassW;
+  height: $compassH;
   border: 1px solid #888;
   margin: 0 auto 5vh;
   border-radius: 50%;
@@ -39,11 +59,11 @@ a {
 }
 
 .needle {
-  width: 50px;
-  height: 50px;
+  width: $needleW;
+  height: $needleW;
   position: relative;
-  top: 25px;
-  left: 25px;
+  top: $needlePos;
+  left: $needlePos;
   animation:
     needle-spin
     infinite 20s

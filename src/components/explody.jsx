@@ -15,7 +15,7 @@ export default class Explody extends React.Component {
         if (typeof child === "string") {
           // regular text child
           child.split("").forEach(c => {
-            this.state.elements.push(this.randomState(10));
+            this.state.elements.push(this.randomState(1));
           })
         }
       });
@@ -69,7 +69,7 @@ export default class Explody extends React.Component {
     ny: normal.y,
     nz: normal.z,
     // adjust # of rotations
-    rho: this.randRange(-300, 400) * factor
+    rho: this.randRange(-300, 2400) * factor
   })
 
   randomState = (factor = 1, hovering = false) => {
@@ -161,7 +161,7 @@ export default class Explody extends React.Component {
           }
           // wrap each word in a set of spans
           const span = <span key={childOffset} className='word-wrapper' style={this.styleFor(childOffset)}>
-              <span style={this.innerStyleFor(childOffset)}>
+              <span className='word-wrapper--inner'style={this.innerStyleFor(childOffset)}>
                 {c}
               </span>
             </span>;

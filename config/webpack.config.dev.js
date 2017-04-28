@@ -6,6 +6,7 @@ var calc = require('postcss-calc');
 var functions = require('postcss-functions');
 var nested = require('postcss-nested');
 var responsiveType = require('postcss-responsive-type');
+var simpleVars = require('postcss-simple-vars');
 
 // RCA vars
 var webpack = require('webpack');
@@ -188,7 +189,8 @@ module.exports = {
 
       calc,
       nested,
-      responsiveType
+      responsiveType,
+      simpleVars
     ];
   },
   plugins: [
