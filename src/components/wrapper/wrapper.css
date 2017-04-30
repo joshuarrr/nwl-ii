@@ -6,8 +6,11 @@ body {
     center center
     fixed;
   background-size: cover;
-  font-family: 'Work Sans', Helvetica, sans;
   padding: 5vh 10vw;
+  font-family: 'Work Sans', Helvetica, sans;
+  line-height: 1.5;
+  font-weight: 300;
+  color: #999;
 
   @media w(768) {
     padding-left: 15vw;
@@ -35,6 +38,43 @@ h2 {
   /* font size with postcss-responsive-type */
   font-size: responsive 18px 25px; /* min-size, max-size */
   font-range: 420px 1650px; /* viewport widths between which font-size is fluid */
+}
+
+
+h3 {
+  /* reset margin */
+  margin: 0;
+  line-height: 0;
+  font-weight: 600;
+  letter-spacing: .03rem;
+  color: #eee;
+}
+
+ul {
+  margin-bottom: 3rem;
+  padding-left: 1rem;
+}
+
+li {
+  color: #ccc;
+}
+
+.nicer-bulleted-list li {
+  list-style-type: none;
+  position: relative;
+  letter-spacing: .02rem;
+  /* keep line height at 1 */
+  line-height: 1;
+  /* adjust line heigt w margin so bullets look right */
+  margin-bottom: .5rem;
+
+  &:before {
+    content: ".";
+    position: absolute;
+    left: -1rem;
+    bottom: 0;
+    font-size: 200%;
+  }
 }
 
 a {
@@ -83,41 +123,49 @@ $needlePos: calc($needleW / 2);
 /* Footer */
 .nwl-logo {
   width: 200px;
-  margin: 15vh auto;
-  position: relative;
   display: block;
+  opacity: .5;
+  position: relative;
+  margin: 10vh 0;
+
+  @media w(768) {
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: 5vh;
+  }
 }
 
 /* CSSTransitionGroup Page Transitions */
-.example-appear {
+.content-appear {
   opacity: 0.01;
 }
 
-.example-appear.example-appear-active {
+.content-appear.content-appear-active {
   opacity: 1;
   transition: opacity 1s ease-in;
 }
 
-.example-enter {
+.content-enter {
   opacity: 0.01;
   color: red;
 }
 
-.example-enter.example-enter-active {
+.content-enter.content-enter-active {
   opacity: 1;
   color: green;
-  transition: all 1000ms ease-in;
+  transition: all 1s ease-in;
 }
 
-.example-leave {
+.content-leave {
   opacity: 1;
   color: blue;
 }
 
-.example-leave.example-leave-active {
+.content-leave.content-leave-active {
   opacity: 0.01;
   color: gold;
-  transition: all 1000ms ease-in;
+  transition: all 1s ease-in;
 }
 
 /* postcss-calc test */

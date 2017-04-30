@@ -4,9 +4,8 @@ import {
   Route,
   Switch
 } from 'react-router-dom';
-import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 
-// Import routes
+// Routes
 import Intro from './pages/intro/intro';
 import Andres from './pages/andres/andres';
 import Joshua from './pages/joshua/joshua';
@@ -19,13 +18,6 @@ import NotFound from './pages/notfound/notfound';
 const Routes = (props) => (
   <Router {...props}>
     <Route render={({ location }) => (
-      <CSSTransitionGroup
-        transitionName="example"
-        transitionAppear={true}
-        transitionAppearTimeout={500}
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-      >
         <Switch key={location.key} location={location}>
           <Route exact path="/" component={Intro} />
           <Route exact path="/intro" component={Intro} />
@@ -37,7 +29,6 @@ const Routes = (props) => (
           <Route path="/contact" component={Contact} />
           <Route path="*" component={NotFound} />
         </Switch>
-      </CSSTransitionGroup>
       )}/>
   </Router>
 );

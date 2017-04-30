@@ -14,7 +14,9 @@ export default class Wrapper extends Component {
         </div>
         {/*<Nav />*/}
         { this.props.children }
-        <img className="nwl-logo" src={Logo} alt="NW Lights logo" />
+        <footer>
+          <img className="nwl-logo" src={Logo} alt="NW Lights logo" />
+        </footer>
       </div>
     );
   }
