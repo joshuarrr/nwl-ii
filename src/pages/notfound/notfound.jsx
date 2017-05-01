@@ -6,14 +6,14 @@ import './notfound.css';
 export default class NotFound extends Component {
   render() {
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Lost" />
         <div>
           <h1>
             Not Found
           </h1>
         </div>
-      </Wrapper>
+      </div>
     );
   }
 }

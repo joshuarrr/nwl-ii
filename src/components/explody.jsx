@@ -1,10 +1,15 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
 
 export default class Explody extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {elements: []};
+    this.state = {
+      exploded: true,
+      initialized: false,
+      elements: [],
+      navOffsets: []
+    };
   }
 
   componentWillMount = () => {
@@ -25,13 +30,14 @@ export default class Explody extends React.Component {
   componentDidMount = () => {
     const explodeme = document.querySelector('.explodeme');
     // console.log('* explodeme = ' + explodeme + '\n');
-    setTimeout(() => explodeme.classList.add('initialized'), 500);
+    setTimeout(() => this.setState({initialized: true}), 500);
     // console.log( 'initialized = ' + el.querySelector('h2') );
   }
 
   defaultState = () => ({
     exploded: false,
     hovering: false,
+    navigationElement: false,
     translate: {
       x: 0,
       y: 0,
@@ -77,6 +83,7 @@ export default class Explody extends React.Component {
     return {
       exploded: true,
       hovering: hovering,
+      navigationElement: false,
       translate: this.randomTranslate(factor),
       rotate: this.randomRotate(normal, factor),
       // adjust transparency
@@ -98,6 +105,9 @@ export default class Explody extends React.Component {
     if (element === undefined) {
       return {};
     }
+    if (element.navigationElement) {
+      return this.navigationStyleFor(index, element.navOffset);
+    }
     const {translate: {x, y, z}, opacity} = element;
     // console.log(index, `translate3d(${x}px, ${y}px, ${z}px)`);
     return {
@@ -106,10 +116,24 @@ export default class Explody extends React.Component {
     };
   }
 
+  navigationStyleFor = (index, navOffset) => {
+    const links = ReactDOM.findDOMNode(this).querySelectorAll('a');
+    const rect = links[navOffset].getBoundingClientRect();
+    let offset = 0;
+    for (let i = 0; i < navOffset; i++) {
+      offset += links[i].getBoundingClientRect().width + 20;
+    }
+    const dx = offset - rect.left;
+    const dy = -rect.top;
+    return {
+      transform: `translate3d(${dx}px, ${dy}px, 0)`
+    };
+  }
+
   // Rotate Style
   innerStyleFor = (index) => {
     const element = this.state.elements[index];
-    if (element === undefined) {
+    if (element === undefined || element.navigationElement) {
       return {};
     }
     const {rotate: {nx, ny, nz, rho}} = element;
@@ -120,34 +144,62 @@ export default class Explody extends React.Component {
   }
 
   explodeAll = () => {
-    // Add a class if exploding
-    const explodeme = document.querySelector('.explodeme');
-    explodeme.classList.add('exploding');
-    explodeme.classList.remove('imploding');
-    // console.log('explodAll');
-    const elementsCopy = this.state.elements.map(() => this.randomState());
-    // console.log('* elementsCopy = ' + elementsCopy + '\n');
-    // console.log('* this.state.elements = ' + this.state.elements + '\n');
-    this.setState({elements: elementsCopy});
+    // generate a new exploded state for each element
+    const elementsCopy = this.state.elements.map((el, i) => {
+      return this.state.navOffsets.indexOf(i) >= 0
+        ? el
+        : this.randomState()
+    });
+    this.setState({
+      elements: elementsCopy,
+      // Adds a class if exploding (in render())
+      exploded: true
+    });
   }
 
   implodeAll = () => {
-    // Add a class if imploding
-    const explodeme = document.querySelector('.explodeme');
-    explodeme.classList.add('imploding');
-    explodeme.classList.remove('exploding');
-    // console.log('implodeAll');
+    if (this.state.navigated) {
+      return;
+    }
+    // generate the default state for each element
     const elementsCopy = this.state.elements.map(() => this.defaultState());
-    this.setState({elements: elementsCopy});
-    // console.log('* elementsCopy = ' + elementsCopy + '\n');
+    this.setState({
+      elements: elementsCopy,
+      // Adds a class if imploding (in render())
+      exploded: false
+    });
+  }
+
+  navigationState = (offset, navOffset) => {
+    return {
+      navigationElement: true,
+      navOffset
+    }
+  }
+
+  navigate = () => {
+    // generate a new exploded state for each element
+    const elementsCopy = this.state.elements.map((el, i) => {
+      const index = this.state.navOffsets.indexOf(i);
+      return index < 0
+        ? el
+        : this.navigationState(i, index)
+    });
+    this.setState({
+      elements: elementsCopy,
+      // Adds a class if exploding (in render())
+      exploded: true,
+      navigated: true
+    });
   }
 
   render = () => {
     const children = [];
+    this.state.navOffsets.length = 0;
     let childOffset = 0;
       React.Children.forEach(
         typeof this.props.children === 'function'
-          ? this.props.children(this.explodeAll, this.implodeAll).props.children
+          ? this.props.children(this.explodeAll, this.implodeAll, this.navigate).props.children
           : this.props.children, (child) => {
         let lastWordWhiteSpace = false;
       if (child[0] === " ") {
@@ -175,12 +227,30 @@ export default class Explody extends React.Component {
       } else if (typeof child.type === "string") {
         // React.dom component (<a> <div> etc)
         children.push(child);
-        // console.log(child); // = NADA
       } else {
         // custom React Component
-        children.push(child);
+        const span = <span key={childOffset} className='word-wrapper' style={this.styleFor(childOffset)}>
+            <span className='word-wrapper--inner'style={this.innerStyleFor(childOffset)}>
+              {child}
+            </span>
+          </span>;
+        children.push(span);
+        if (!lastWordWhiteSpace) {
+          children.push(" ");
+        }
+        this.state.navOffsets.push(childOffset);
+        childOffset++;
+        lastWordWhiteSpace = true;
       }
     });
-    return <h2 className='explodeme'>{children}</h2>;
+    const classList = [
+      'explodeme',
+      this.state.exploded ? 'exploding' : 'imploding',
+      this.state.initialized ? 'initialized' : 'uninitialized'
+    ];
+    return <h2
+      className={classList.join(' ')}
+      style={{maxHeight: this.state.navigated ? 0 : 1000}}
+      >{children}</h2>;
   }
 }

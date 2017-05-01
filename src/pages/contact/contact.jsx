@@ -7,12 +7,12 @@ export default class Contact extends Component {
 
   render() {
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Contact" />
           <h1>
             Contact
           </h1>
-      </Wrapper>
+      </div>
     );
   }
 }

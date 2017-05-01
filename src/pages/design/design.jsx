@@ -6,7 +6,7 @@ import '../../styles/shared.css';
 export default class Design extends Component {
   render() {
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Design" />
         {/*<h1>Design is hard</h1>*/}
         <h2>
@@ -39,7 +39,7 @@ export default class Design extends Component {
               <li>Analytics</li>
             </ul>
         </div>
-      </Wrapper>
+      </div>
     );
   }
 }

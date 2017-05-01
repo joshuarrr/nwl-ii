@@ -154,7 +154,7 @@ $needlePos: calc($needleW / 2);
 .content-enter.content-enter-active {
   opacity: 1;
   color: green;
-  transition: all 1s ease-in;
+  /* transition: all 1s ease-in; */
 }
 
 .content-leave {
@@ -165,7 +165,7 @@ $needlePos: calc($needleW / 2);
 .content-leave.content-leave-active {
   opacity: 0.01;
   color: gold;
-  transition: all 1s ease-in;
+  /* transition: all 1s ease-in; */
 }
 
 /* postcss-calc test */

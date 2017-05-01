@@ -6,12 +6,12 @@ import Wrapper from '../../components/wrapper/wrapper';
 export default class Product extends Component {
   render() {
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Product Management" />
         <h1>
           Product Management
         </h1>
-      </Wrapper>
+      </div>
     );
   }
 }

@@ -6,7 +6,7 @@ import Wrapper from '../../components/wrapper/wrapper';
 export default class Joshua extends Component {
   render() {
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Joshua Richey" />
         <h1>
           Joshua Richey
@@ -17,7 +17,7 @@ export default class Joshua extends Component {
         <p>
           A human centered interactive experience designer focused on crafting products that empower, delight, and improve lives, Joshua is compelled by the challenge of creating simple solutions to complex problems.
         </p>
-      </Wrapper>
+      </div>
     );
   }
 }

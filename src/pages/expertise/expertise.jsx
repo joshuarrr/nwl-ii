@@ -6,12 +6,12 @@ import Wrapper from '../../components/wrapper/wrapper';
 export default class Expertise extends Component {
   render() {
     return (
-      <Wrapper>
+      <div>
         <Helmet title="Expertise" />
         <h1>
           Expertise
         </h1>
-      </Wrapper>
+      </div>
     );
   }
 }

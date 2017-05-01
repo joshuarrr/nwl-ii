@@ -35,6 +35,7 @@ a {
 .explodeme {
   user-select: none;
   cursor: default;
+  transition: max-height .7s cubic-bezier(0,.3,.4,1);
 }
 
 .word-wrapper,
@@ -47,24 +48,26 @@ a {
 }
 
 /* Pre-initialized -- Imploding */
-.imploding {
-
-  .word-wrapper {
-    /* translate */
-    transition:
+.uninitialized {
+  .imploding {
+    .word-wrapper {
+      /* translate */
+      transition:
       transform 1.5s cubic-bezier(0,.3,.4,1),
       opacity 1.5s;
 
-    .word-wrapper--inner {
-      /* rotation */
-      transition:
+      .word-wrapper--inner {
+        /* rotation */
+        transition:
         transform 1.75s cubic-bezier(0,.3,.4,1);
+      }
     }
   }
 }
 
 /* Post-initialized */
 .initialized {
+/*.explodeme {*/
 
   /* Imploding */
   &.imploding {
