@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './explody.css';
 
 export default class Explody extends React.Component {
   constructor(props, context) {

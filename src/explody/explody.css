@@ -1,0 +1,78 @@
+/* Explody animations */
+/* ----------------- */
+.explodeme {
+  user-select: none;
+  cursor: default;
+  transition: max-height .7s cubic-bezier(0,.3,.4,1);
+}
+
+.word-wrapper,
+.word-wrapper > span {
+  display: inline-block;
+}
+
+.word-wrapper > span {
+  z-index: 100;
+}
+
+/* Pre-initialized -- Imploding */
+.uninitialized {
+  .imploding {
+    .word-wrapper {
+      /* translate */
+      transition:
+      transform 1.5s cubic-bezier(0,.3,.4,1),
+      opacity 1.5s;
+
+      .word-wrapper--inner {
+        /* rotation */
+        transition:
+        transform 1.75s cubic-bezier(0,.3,.4,1);
+      }
+    }
+  }
+}
+
+/* Post-initialized */
+.initialized {
+/*.explodeme {*/
+
+  /* Imploding */
+  &.imploding {
+
+    .word-wrapper {
+      /* translate */
+      transition:
+        transform 1s cubic-bezier(0,.3,.4,1),
+        opacity 10s;
+
+      .word-wrapper--inner {
+        /* rotation */
+        transition:
+          /*
+          FIXME:
+          this rotate transform is being drastically sped up for some reason
+          */
+          transform 1.4s cubic-bezier(.1,.01,.4,1);
+      }
+    }
+  }
+
+  /* Exploding */
+  &.exploding {
+
+    .word-wrapper {
+      /* translate */
+      transition:
+        /* property name | duration | timing function | delay */
+        transform 3s cubic-bezier(.05,.02,.4,1) .15s,
+        opacity 10s .15s;
+
+      .word-wrapper--inner {
+        /* rotation */
+        transition:
+          transform 15s cubic-bezier(0,.3,.4,1) .15s;
+      }
+    }
+  }
+}
