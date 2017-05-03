@@ -4,11 +4,13 @@ import Needle from './needle.svg';
 import Logo from './nwl-logo.svg';
 import Explody from '../../explody/explody';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import './wrapper.css';
 
-export default class Wrapper extends Component {
+class Wrapper extends Component {
   render() {
+    const navigated = !(this.props.location.pathname === '/' || this.props.location.pathname === '/intro');
     return (
       <div className="wrapper">
         <Helmet titleTemplate="%s | NWL" id="pop" />
@@ -23,7 +25,7 @@ export default class Wrapper extends Component {
           transitionEnterTimeout={500}
           transitionLeaveTimeout={500}
         >
-          <Explody>{
+          <Explody navigated={navigated}>{
             (explodeAll, implodeAll, navigate) =>
               <div>
                 NW Lights is a product design & management consultancy lead by
@@ -41,3 +43,5 @@ export default class Wrapper extends Component {
     );
   }
 }
+
+export default Wrapper = withRouter(Wrapper);

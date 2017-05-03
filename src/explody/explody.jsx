@@ -13,6 +13,16 @@ export default class Explody extends React.Component {
     };
   }
 
+  componentWillReceiveProps = (nextProps) => {
+    if (this.props.navigated && !nextProps.navigated) {
+      this.setState({navigated: false, navigating: false}, () => this.implodeAll());
+    } else if (!this.props.navigated && nextProps.navigated) {
+      this.setState({navigated: false, navigating: false}, () => {
+        this.explodeAllAndNavigate();
+      });
+    }
+  }
+
   componentWillMount = () => {
     React.Children.forEach(
       typeof this.props.children === 'function'
@@ -222,6 +232,21 @@ export default class Explody extends React.Component {
       const index = this.state.navOffsets.indexOf(i);
       return index < 0
         ? el
+        : this.navigationState(i, index)
+    });
+    this.setState({
+      elements: elementsCopy,
+      // Adds a class if exploding (in render())
+      exploded: true,
+      navigating: true
+    });
+  }
+
+  explodeAllAndNavigate = () => {
+    const elementsCopy = this.state.elements.map((el, i) => {
+      const index = this.state.navOffsets.indexOf(i);
+      return index < 0
+        ? this.randomState()
         : this.navigationState(i, index)
     });
     this.setState({
