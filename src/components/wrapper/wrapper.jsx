@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import Needle from './needle.svg';
 import Logo from './nwl-logo.svg';
-import Explody from '../../components/explody';
+import Explody from '../../explody/explody';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import { Link } from 'react-router-dom';
 import './wrapper.css';

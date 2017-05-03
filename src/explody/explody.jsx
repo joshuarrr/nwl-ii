@@ -35,6 +35,44 @@ export default class Explody extends React.Component {
     // console.log( 'initialized = ' + el.querySelector('h2') );
   }
 
+  componentDidUpdate = () => {
+    if (this.state.navigating) {
+      const elementsCopy = this.state.elements.map((el, i) => {
+        if (el.navigationElement) {
+          const offset = this.navigationOffsetFor(i, el.navOffset);
+          return this.navigationState(
+            i,
+            el.navOffset,
+            offset.dx,
+            offset.dy
+          )
+        } else {
+          return el;
+        }
+      });
+      this.setState({
+        navigating: false,
+        navigated: true,
+        elements: elementsCopy
+      });
+    }
+  }
+
+  navigationOffsetFor = (index, navOffset) => {
+    const links = ReactDOM.findDOMNode(this).querySelectorAll('a');
+    const rect = links[navOffset].getBoundingClientRect();
+    let offset = 0;
+    for (let i = 0; i < navOffset; i++) {
+      offset += links[i].getBoundingClientRect().width + 20;
+    }
+    const dx = offset - rect.left;
+    const dy = -rect.top;
+    return {
+      dx, dy
+    };
+  }
+
+
   defaultState = () => ({
     exploded: false,
     hovering: false,
@@ -107,7 +145,7 @@ export default class Explody extends React.Component {
       return {};
     }
     if (element.navigationElement) {
-      return this.navigationStyleFor(index, element.navOffset);
+      return this.navigationStyleFor(element);
     }
     const {translate: {x, y, z}, opacity} = element;
     // console.log(index, `translate3d(${x}px, ${y}px, ${z}px)`);
@@ -117,17 +155,9 @@ export default class Explody extends React.Component {
     };
   }
 
-  navigationStyleFor = (index, navOffset) => {
-    const links = ReactDOM.findDOMNode(this).querySelectorAll('a');
-    const rect = links[navOffset].getBoundingClientRect();
-    let offset = 0;
-    for (let i = 0; i < navOffset; i++) {
-      offset += links[i].getBoundingClientRect().width + 20;
-    }
-    const dx = offset - rect.left;
-    const dy = -rect.top;
+  navigationStyleFor = (element) => {
     return {
-      transform: `translate3d(${dx}px, ${dy}px, 0)`
+      transform: `translate3d(${element.dx}px, ${element.dy}px, 0)`
     };
   }
 
@@ -145,6 +175,9 @@ export default class Explody extends React.Component {
   }
 
   explodeAll = () => {
+    if (this.state.navigated || this.state.navigating) {
+      return;
+    }
     // generate a new exploded state for each element
     const elementsCopy = this.state.elements.map((el, i) => {
       return this.state.navOffsets.indexOf(i) >= 0
@@ -159,7 +192,7 @@ export default class Explody extends React.Component {
   }
 
   implodeAll = () => {
-    if (this.state.navigated) {
+    if (this.state.navigated || this.state.navigating) {
       return;
     }
     // generate the default state for each element
@@ -171,14 +204,19 @@ export default class Explody extends React.Component {
     });
   }
 
-  navigationState = (offset, navOffset) => {
+  navigationState = (offset, navOffset, dx, dy) => {
     return {
       navigationElement: true,
-      navOffset
+      navOffset,
+      dx,
+      dy
     }
   }
 
   navigate = () => {
+    if (this.state.navigated || this.state.navigating) {
+      return;
+    }
     // generate a new exploded state for each element
     const elementsCopy = this.state.elements.map((el, i) => {
       const index = this.state.navOffsets.indexOf(i);
@@ -190,7 +228,7 @@ export default class Explody extends React.Component {
       elements: elementsCopy,
       // Adds a class if exploding (in render())
       exploded: true,
-      navigated: true
+      navigating: true
     });
   }
 
@@ -230,7 +268,7 @@ export default class Explody extends React.Component {
         children.push(child);
       } else {
         // custom React Component
-        const span = <span key={childOffset} className='word-wrapper' style={this.styleFor(childOffset)}>
+        const span = <span key={childOffset} className='nav word-wrapper' style={this.styleFor(childOffset)}>
             <span className='word-wrapper--inner'style={this.innerStyleFor(childOffset)}>
               {child}
             </span>

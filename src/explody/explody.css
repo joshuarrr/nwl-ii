@@ -74,5 +74,19 @@
           transform 15s cubic-bezier(0,.3,.4,1) .15s;
       }
     }
+
+    .nav {
+      /* translate */
+      transition:
+        /* property name | duration | timing function | delay */
+        transform .5s cubic-bezier(.05,.02,.4,1) .15s,
+        opacity 10s .15s;
+
+      .word-wrapper--inner {
+        /* rotation */
+        transition:
+          transform 15s cubic-bezier(0,.3,.4,1) .15s;
+      }
+    }
   }
 }

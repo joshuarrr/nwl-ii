@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Helmet } from "react-helmet";
-import Explody from '../../components/explody';
 import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import './intro.css';
 
